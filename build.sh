@@ -8,8 +8,8 @@ log() {
 
 # Build QuicTLS
 build_quictls() {
-    log "Starting QuicTLS build"
-    git clone --depth 1 -b OpenSSL_1_1_1t+quic https://github.com/quictls/openssl.git
+    log "Starting QuicTLS build for ARMv7"
+    git clone -b OpenSSL_1_1_1t+quic https://github.com/quictls/openssl.git
     cd openssl
     ./Configure no-shared \
         --prefix=/opt/quictls \
@@ -28,8 +28,7 @@ build_quictls() {
         no-rc2 \
         no-rc4 \
         no-rc5 \
-        no-dsa \
-        enable-ec_nistp_64_gcc_128
+        no-dsa
     make -j$(nproc)
     make install_sw
     cd ..
@@ -38,8 +37,8 @@ build_quictls() {
 
 # Build HAProxy
 build_haproxy() {
-    log "Starting HAProxy build"
-    git clone --depth 1 -b v2.7.0 https://github.com/haproxy/haproxy.git
+    log "Starting HAProxy build for ARMv7"
+    git clone https://github.com/haproxy/haproxy.git
     cd haproxy
     make -j$(nproc) TARGET=linux-glibc \
         USE_LUA=1 \
@@ -62,7 +61,7 @@ build_haproxy() {
 
 # Main build process
 main() {
-    log "Starting build process"
+    log "Starting build process for ARMv7"
     build_quictls
     build_haproxy
     log "Build process completed"

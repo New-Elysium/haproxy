@@ -1,5 +1,5 @@
 # Build stage
-FROM alpine:latest AS builder
+FROM --platform=linux/arm/v7 alpine:latest AS builder
 
 # Install build dependencies
 RUN apk add --no-cache --virtual .build-deps \
@@ -15,7 +15,8 @@ RUN apk add --no-cache --virtual .build-deps \
     tar \
     zlib-dev \
     openssl-dev \
-    curl
+    curl \
+    libatomic
 
 # Copy build script
 COPY build.sh /build/build.sh
@@ -26,7 +27,7 @@ WORKDIR /build
 RUN ./build.sh
 
 # Runtime stage
-FROM alpine:latest
+FROM --platform=linux/arm/v7 alpine:latest
 
 # Install runtime dependencies
 RUN apk add --no-cache \
